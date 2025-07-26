@@ -35,15 +35,22 @@ export const convertDataToProps = (props: Record<string, TData>): Record<string,
   );
 };
 export const convertToPlainProps = (props: Record<string, any>, getData: any) => {
-  const result: Record<string, any> = {};
+  // Start with a shallow copy of props
+  const result: Record<string, any> = { ...props };
+  const result2: Record<string, any> = {};
+
   for (const [key, val] of Object.entries(props)) {
-    if (!isTData(val)) result[key] = val;
-    else {
-      const converted = getData(val);
-      result[key] = converted;
+    const processedVal = isTData(val) ? getData(val) : val;
+
+    result[key] = processedVal;
+
+    if (key.includes('-')) {
+      const path = key.split('-').join('.');
+      _.set(result2, path, processedVal);
     }
   }
-  return result;
+
+  return { ...result, ...result2 };
 };
 export const isTData = (value: any): value is TData => {
   // Must be a plain object

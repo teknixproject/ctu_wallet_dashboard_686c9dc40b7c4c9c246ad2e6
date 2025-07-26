@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { createWithEqualityFn } from 'zustand/traditional';
 
 import { TAuthSetting } from '@/types/authSetting';
 
@@ -20,7 +20,7 @@ const initValue: TState = {
   forbiddenCode: 403,
 };
 
-export const authSettingStore = create<TState & TActions>()(
+export const authSettingStore = createWithEqualityFn<TState & TActions>()(
   devtools(
     (set) => ({
       ...initValue,

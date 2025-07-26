@@ -22,13 +22,21 @@ export const customFunctionStore = create<State & TActions>()(
     (set, get) => ({
       ...initValues,
       setCustomFunctions(data) {
+        const oldData = get().customFunctions || {};
+
+        // Only include new items from data that don't exist in oldData
+        const newData = data?.reduce(
+          (acc, item) => {
+            if (!(item._id in oldData)) {
+              acc[item._id] = item;
+            }
+            return acc;
+          },
+          { ...oldData }
+        );
+
         return set({
-          customFunctions: data?.reduce((obj, item) => {
-            return {
-              ...obj,
-              [item._id]: item,
-            };
-          }, {}),
+          customFunctions: newData,
         });
       },
       findCustomFunction(id) {

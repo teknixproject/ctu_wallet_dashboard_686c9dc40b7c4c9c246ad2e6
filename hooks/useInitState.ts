@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import _ from 'lodash';
+import _, { isEqual } from 'lodash';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -78,8 +78,8 @@ export const useInitStatePreview = () => {
   const { uid, customWidgetName, projectId, sectionName, userId } = useSearchParamsData();
 
   // Store actions
-  const { addAndUpdateApiResource } = apiResourceStore();
-  const { setStateManagement } = stateManagementStore();
+  const addAndUpdateApiResource = apiResourceStore((state) => state.addAndUpdateApiResource);
+  const setStateManagement = stateManagementStore((state) => state.setStateManagement);
   const setCustomFunctions = customFunctionStore((state) => state.setCustomFunctions);
   const resetAuthSettings = authSettingStore((state) => state.reset);
   const [loading, setLoading] = useState<boolean>(false);
@@ -224,17 +224,27 @@ export const useInitStateRender = () => {
   }, [pathname]);
 
   const addAndUpdateApiResource = apiResourceStore((state) => state.addAndUpdateApiResource);
-  const { setStateManagement, findVariable } = stateManagementStore();
+  const setStateManagement = stateManagementStore((state) => state.setStateManagement);
+  const findVariable = stateManagementStore((state) => state.findVariable);
   const resetAuthSettings = authSettingStore((state) => state.reset);
 
   const router = useRouter();
   const setCustomFunctions = customFunctionStore((state) => state.setCustomFunctions);
-  const { enable, pages, entryPage } = authSettingStore();
+  const { enable, pages, entryPage } = authSettingStore((state) => {
+    return {
+      enable: state.enable,
+      pages: state.pages,
+      entryPage: state.entryPage,
+    };
+  }, isEqual);
   const { bodyLayout, isLoading } = useConstructorDataAPI(uid || '');
   const [loading, setLoading] = useState<boolean>(true);
 
   const [deviceType, setDeviceType] = useState<DeviceType>(getDeviceType());
-  const selectedBodyLayout = bodyLayout[deviceType] ?? bodyLayout ?? {};
+  const selectedBodyLayout = useMemo(
+    () => bodyLayout[deviceType] ?? bodyLayout ?? {},
+    [bodyLayout, deviceType]
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

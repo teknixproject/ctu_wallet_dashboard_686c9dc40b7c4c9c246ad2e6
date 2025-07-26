@@ -3,10 +3,8 @@
 
 import React, { FC } from 'react';
 
-import { useActions } from '@/hooks/useActions';
 import { GridItem } from '@/types/gridItem';
 
-import LoadingPage from './loadingPage';
 import RenderSliceItem from './RenderSliceItem';
 import { GridSystemProps } from './types';
 
@@ -34,9 +32,6 @@ interface ComponentProps {
 
 //#region Grid System
 const GridSystemContainer: FC<GridSystemProps> = ({ page, isBody, isFooter, style }) => {
-  const { isLoading } = useActions(page);
-
-  if (isLoading) return <LoadingPage />;
   if (!page?.childs) return;
   return <RenderSliceItem data={page} key={page.id} />;
 };

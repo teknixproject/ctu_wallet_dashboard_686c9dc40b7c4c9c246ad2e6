@@ -131,7 +131,7 @@ const ConfigMenu: React.FC<NavigationMenuProps> = ({
       const findMatchingKeys = (items: any[], path: string) => {
         for (const item of items || []) {
           // Kiểm tra nếu item.value khớp với pathname
-          if (item.value === path) {
+          if (item.key === path) {
             selectedKeys.push(item.key);
             return true;
           }
@@ -170,10 +170,10 @@ const ConfigMenu: React.FC<NavigationMenuProps> = ({
       };
 
       const menuItem = findItemByKey(items, key);
-      if (menuItem?.value) {
+      if (menuItem?.key) {
         console.log('handleMenuClick if');
 
-        router.push(menuItem.value);
+        router.push(menuItem.key);
       } else if (key) {
         console.log('handleMenuClick else');
         router.push(`/${key}`);

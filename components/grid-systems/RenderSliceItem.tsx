@@ -53,7 +53,7 @@ const handleCssWithEmotion = (staticProps: Record<string, any>) => {
 const useRenderItem = (data: GridItem, valueStream?: any) => {
   const valueType = useMemo(() => data?.value?.toLowerCase() || '', [data?.value]);
   const { isNoChildren } = getComponentType(data?.value || '');
-  const { findVariable } = stateManagementStore();
+  const findVariable = stateManagementStore((state) => state.findVariable);
   // const setValueStream = useDataStreamStore((state) => state.setValueStream);
   const { dataState, getData } = useHandleData({
     dataProp: getPropData(data),

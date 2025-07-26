@@ -2,11 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware'; // Import devtools middleware
 
 import {
-  TDocumentState,
-  TDocumentStateFind,
-  TDocumentStateSet,
-  TDocumentStateUpdate,
-  TVariable,
+    TDocumentState, TDocumentStateFind, TDocumentStateSet, TDocumentStateUpdate, TVariable
 } from '@/types';
 import { transformVariable } from '@/uitls/tranformVariable';
 
@@ -33,8 +29,21 @@ export const stateManagementStore = create<TDocumentState & TDocumentStateAction
       ...initValue,
 
       setStateManagement: ({ type, dataUpdate }) => {
+        const oldData = get()[type] || {};
+
+        // Only include new keys from dataUpdate that don't exist in oldData
+        const newData = Object.keys(dataUpdate).reduce(
+          (acc, key) => {
+            if (!(key in oldData)) {
+              acc[key] = dataUpdate[key];
+            }
+            return acc;
+          },
+          { ...oldData }
+        );
+
         set(() => ({
-          [type]: dataUpdate,
+          [type]: newData,
         }));
       },
       findVariable: ({ type, id, name }) => {

@@ -72,7 +72,6 @@ export const handleCustomFunction = async ({
 
   if (_.isEmpty(customFunction)) return;
   const args = await buildArgsFromDefinedProps(customFunction?.props, data?.props);
-  console.log('🚀 ~ handleCustomFunction ~ args:', args);
   const runFunction = async () => {
     try {
       const fn = new Function(`return ${customFunction.code}`)() as (args: any) => any;

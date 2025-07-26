@@ -194,7 +194,7 @@ export type TActionLoopOverList = {
   reserverOrder: boolean;
 };
 export type TActionCustomFunction = TData['customFunction'] & {
-  output: { variableId: string };
+  output: { variableId: string; typeStore: TTypeSelect };
   isList: boolean;
   outputType: TTypeVariable;
 };
