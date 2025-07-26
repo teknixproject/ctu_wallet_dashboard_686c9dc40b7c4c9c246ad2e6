@@ -1,7 +1,29 @@
 import _ from 'lodash';
+import { isValidElement } from 'react';
 
 import { TData } from '@/types';
 
+// Utility function to check if a value is a ReactNode
+function isReactNode(value: any): boolean {
+  if (value == null) return true;
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
+    return true;
+  if (isValidElement(value)) return true;
+  if (Array.isArray(value)) return value.every((item) => isReactNode(item));
+  if (value?.$$typeof === Symbol.for('react.portal')) return true;
+  return false;
+}
+
+// Utility to ensure a value is a valid React child
+export function ensureValidReactChild(value: any): any {
+  if (isReactNode(value)) return value;
+  if (value && typeof value === 'object') {
+    // Handle objects like { value, label } by returning a string or fragment
+    return value.label || value.value || JSON.stringify(value);
+  }
+  // Fallback: convert to string to avoid invalid child error
+  return String(value);
+}
 export const convertFieldValue = (value: any) => {
   if (typeof value !== 'object') {
     return {
@@ -50,7 +72,11 @@ export const convertToPlainProps = (props: Record<string, any>, getData: any) =>
     }
   }
 
-  return { ...result, ...result2 };
+  const result3 = { ...result, ...result2 };
+
+  // console.log('🚀 ~ convertToPlainProps ~ result3:', result3);
+
+  return result3;
 };
 export const isTData = (value: any): value is TData => {
   // Must be a plain object

@@ -1,6 +1,7 @@
 import { TAction, TConditionalChild, TConditionChildMap } from '@/types';
 
 import { actionHookSliceStore } from './store/actionSliceStore';
+import { TActionsProps } from './useActions';
 import { useHandleData } from './useHandleData';
 
 export type TUseActions = {
@@ -134,9 +135,7 @@ export const evaluateCompareCondition = async (
   }
 
   const firstValue = await getData(compare.firstValue);
-  console.log('🚀 evaluateCompareCondition~ firstValue:', firstValue);
   const secondValue = await getData(compare.secondValue);
-  console.log('🚀evaluateCompareCondition ~ secondValue:', secondValue);
 
   // Check for null/undefined values
   if (firstValue == null || secondValue == null) {
@@ -192,8 +191,6 @@ export const handleCompareCondition = async (
     ? await handleCompareCondition(conditionChild.secondCondition, condition, getData)
     : undefined;
 
-  console.log('🚀 ~ firstValue:', firstValue);
-  console.log('🚀 ~ secondValue:', secondValue);
   const valueComparasion = evaluateLogicOperation(
     firstValue,
     secondValue,
@@ -244,10 +241,10 @@ export const processCondition = async (
  * @param props - Hook properties containing action execution function
  * @returns Object with condition execution functions
  */
-export const useConditionChildAction = (): TUseActions => {
+export const useConditionChildAction = (props: TActionsProps): TUseActions => {
   // Store hooks
   const { findAction } = actionHookSliceStore();
-  const { getData } = useHandleData({});
+  const { getData } = useHandleData(props);
 
   const handleCompareConditionWrapper = async (
     conditionChildId: string,

@@ -97,7 +97,7 @@ const useRenderItem = (data: GridItem, valueStream?: any) => {
     }
     if ('styleMultiple' in result) _.unset(result, 'styleMultiple');
     if ('dataProps' in result) _.unset(result, 'dataProps');
-
+    if (data.id.includes('Image')) console.log(`🚀 ~ result: ${data.id}`, result);
     const plainProps = convertToPlainProps(result, getData);
 
     result = cleanProps(plainProps, valueType);
@@ -136,7 +136,7 @@ const RenderSliceItem: FC<TProps> = (props) => {
   const { data, valueStream } = useMemo(() => props, [props]);
 
   const { isLoading, valueType, Component, propsCpn, dataState } = useRenderItem(data, valueStream);
-  console.log(`🚀 ~ propsCpn: ${data.id}`, propsCpn);
+  // if (data.id.includes('Image')) console.log(`🚀 ~ propsCpn: ${data.id}`, propsCpn);
 
   const { isForm, isNoChildren, isChart, isMap } = getComponentType(data?.value || '');
   if (!valueType) return <div></div>;

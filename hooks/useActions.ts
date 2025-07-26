@@ -41,8 +41,8 @@ export const useActions = (props: TActionsProps): TUseActions => {
   const findAction = actionHookSliceStore((state) => state.findAction);
   const { handleApiCallAction } = useApiCallAction(props);
   // const { executeConditional } = useConditionAction();
-  const { executeConditionalChild } = useConditionChildAction();
-  const { handleUpdateStateAction } = useUpdateStateAction();
+  const { executeConditionalChild } = useConditionChildAction(props);
+  const { handleUpdateStateAction } = useUpdateStateAction(props);
   const { handleNavigateAction } = useNavigateAction({ data, valueStream });
   const { executeLoopOverList } = useLoopActions();
   const { handleCustomFunction } = useCustomFunction(props);

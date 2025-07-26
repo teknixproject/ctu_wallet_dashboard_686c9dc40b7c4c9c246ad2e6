@@ -70,25 +70,8 @@ export const useHandleData = (props: TUseHandleData): UseHandleDataReturn => {
   const findVariable = stateManagementStore((state) => state.findVariable);
 
   const handleInputValue = (data: TData['valueInput']) => {
-    return data || '';
+    return data;
   };
-
-  // useEffect(() => {
-  //   // const ids = getVariableIdsFormData(props.dataProp);
-
-  //   setDataState((prev: Record<string, any>) => {
-  //     if (isEqual(prev, reslt)) return prev;
-  //     return reslt;
-  //   });
-  // }, [
-  //   appState,
-  //   globalState,
-  //   componentState,
-  //   apiResponseState,
-  //   props.componentProps,
-  //   props.valueStream,
-  //   props.dataProp,
-  // ]);
 
   //#region handle api
   const handleApiResponse = useCallback(
@@ -240,7 +223,6 @@ export const useHandleData = (props: TUseHandleData): UseHandleDataReturn => {
 
   //#region handle item list
   const handleItemInList = (data: TData, valueStream: any) => {
-    console.log('🚀 ~ handleItemInList ~ props.valueStream:', props.valueStream);
     const { jsonPath } = data.itemInList;
     if (jsonPath) {
       const result = JSONPath({
@@ -418,7 +400,7 @@ export const useHandleData = (props: TUseHandleData): UseHandleDataReturn => {
     return result;
   }, []);
   const dataState = useMemo(() => {
-    const dataMultiple = props.dataProp?.reduce((obj, item) => {
+    const dataMultiple = props?.dataProp?.reduce((obj, item) => {
       return {
         ...obj,
         [item.name]: getData(item.data, props.valueStream),
@@ -455,9 +437,6 @@ export const useHandleData = (props: TUseHandleData): UseHandleDataReturn => {
       ...dataMultiple,
       ...componentConverted,
     };
-    // if (props.valueType?.toLowerCase() === 'datepicker') {
-    //   console.log('🚀 ~ useHandleData ~ reslt:', reslt);
-    // }
 
     return reslt;
   }, [
@@ -465,9 +444,9 @@ export const useHandleData = (props: TUseHandleData): UseHandleDataReturn => {
     globalState,
     componentState,
     apiResponseState,
-    props.componentProps,
-    props.valueStream,
-    props.dataProp,
+    props?.componentProps,
+    props?.valueStream,
+    props?.dataProp,
   ]);
   return {
     getData,

@@ -4,20 +4,19 @@ import { useEffect, useRef } from 'react';
 import { stateManagementStore } from '@/stores';
 import { TAction, TActionUpdateState, TTypeSelectState } from '@/types';
 
-import { actionHookSliceStore } from './store/actionSliceStore';
+import { TActionsProps } from './useActions';
 import { useHandleData } from './useHandleData';
 
 export type TUseActions = {
   handleUpdateStateAction: (action: TAction<TActionUpdateState>) => Promise<void>;
 };
 
-export const useUpdateStateAction = (): TUseActions => {
+export const useUpdateStateAction = (props: TActionsProps): TUseActions => {
   // State management
 
   // Store hooks
-  const { getData } = useHandleData({});
+  const { getData } = useHandleData(props);
   const { findVariable, updateVariables } = stateManagementStore();
-  const { findAction } = actionHookSliceStore();
   // Memoized actions from data
 
   const mounted = useRef(false);
@@ -34,7 +33,6 @@ export const useUpdateStateAction = (): TUseActions => {
 
   const handleUpdateStateAction = async (action: TAction<TActionUpdateState>): Promise<void> => {
     const updates = action?.data?.update;
-    console.log('🚀 ~ handleUpdateStateAction ~ updates:', updates);
 
     if (_.isEmpty(updates)) return;
 
@@ -46,10 +44,8 @@ export const useUpdateStateAction = (): TUseActions => {
         type: type as TTypeSelectState,
         id: (item.firstState[type] as any).variableId || '',
       });
-      console.log('🚀 ~ handleUpdateStateAction ~ item:', item);
 
-      const variableSecond = getData(item.secondState);
-      console.log('🚀 ~ handleUpdateStateAction ~ variableSecond:', variableSecond);
+      const variableSecond = await getData(item.secondState);
 
       if (!variableFirst) return;
 

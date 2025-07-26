@@ -1,9 +1,32 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import {
-  Badge, Button, Card, Checkbox, Collapse, DatePicker, Drawer, Dropdown, DropdownProps, Form,
-  Image, Input, InputNumber, List, Modal, Popover, Radio, Select, Statistic, Table, TableProps,
-  Tabs, Tag, Typography
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Checkbox,
+  Collapse,
+  DatePicker,
+  Drawer,
+  Dropdown,
+  DropdownProps,
+  Form,
+  Image,
+  Input,
+  InputNumber,
+  List,
+  Modal,
+  Popover,
+  Radio,
+  Select,
+  Statistic,
+  Switch,
+  Table,
+  TableProps,
+  Tabs,
+  Tag,
+  Typography,
 } from 'antd';
 import GoogleMapReact from 'google-map-react';
 import _ from 'lodash';
@@ -46,7 +69,8 @@ export const componentRegistry = {
   radarchart: Radar,
   rosechart: Rose,
   stockchart: Stock,
-
+  avatar: Avatar,
+  switch: Switch,
   menu: ConfigMenu,
   modal: Modal,
   drawer: Drawer,
@@ -54,6 +78,7 @@ export const componentRegistry = {
   badge: Badge,
   icon: Icon,
   map: GoogleMapReact,
+  textarea: Input.TextArea,
 };
 
 const convertIconStringToComponent = (iconString: string) => {
